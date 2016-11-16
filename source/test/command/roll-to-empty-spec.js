@@ -5,6 +5,7 @@ import Map from '../../src/Map';
 import Dice from '../../src/Dice';
 import RollCommand from '../../src/command/RollCommand';
 import YesToBuyResponse from '../../src/command/YesToBuyResponse';
+import NoToBuyResponse from '../../src/command/NoToBuyResponse';
 import * as Status from '../../src/status';
 
 
@@ -47,5 +48,16 @@ describe('roll to empty test', () => {
 
         expect(player.status).toBe(Status.END_TURN);
         expect(player.balance).toBe(1000 - 200);
+    })
+
+    it('should be end turn when respond no to buy empty', ()=> {
+        player.balance = 1000;
+        player.currentPlace = targetPlace;
+        let noToBuy = new NoToBuyResponse();
+
+        player.execute(noToBuy);
+
+        expect(player.status).toBe(Status.END_TURN);
+        expect(player.balance).toBe(1000);
     })
 });
