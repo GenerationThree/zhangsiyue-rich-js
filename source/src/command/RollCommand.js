@@ -24,6 +24,10 @@ export default class RollCommand extends Command {
                 return Status.WAIT_RESPONSE;
             }
 
+            if(player.currentPlace.owner !== player){
+                return Status.END_TURN;
+            }
+
         }
     }
 }
