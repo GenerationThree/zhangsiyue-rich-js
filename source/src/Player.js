@@ -8,4 +8,8 @@ export default class Player{
     execute(command){
         this.status = command.execute(this);
     }
+
+    respond(response){
+        this.status = response.execute(this);
+    }
 }
