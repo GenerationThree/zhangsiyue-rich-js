@@ -25,6 +25,11 @@ export default class RollCommand extends Command {
             }
 
             if(player.currentPlace.owner !== player){
+                if(player.balance < target.getFee()){
+                    player.action = '破产啦';
+                    return Status.END_GAME;
+                }
+                player.payFee();
                 return Status.END_TURN;
             }
 

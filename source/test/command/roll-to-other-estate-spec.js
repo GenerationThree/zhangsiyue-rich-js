@@ -18,8 +18,16 @@ describe('roll to owned estate test', () => {
     beforeEach(() => {
         startPoint = new Place();
         targetPlace = new Estate(200);
+        targetPlace.level = 0;
+
         player = new Player(startPoint);
+        player.freeTurns = -1;
+        player.balance = 1000;
+
         otherPlayer = new Player(startPoint);
+        otherPlayer.currentPlace = targetPlace;
+        otherPlayer.balance = 1000;
+
         map = new Map(startPoint, targetPlace);
         dice = new Dice();
         rollCommand = new RollCommand(map, dice);
@@ -32,5 +40,18 @@ describe('roll to owned estate test', () => {
         player.execute(rollCommand);
 
         expect(player.status).toBe(Status.END_TURN);
+        expect(player.balance).toBe(1000 - targetPlace.getFee());
+        expect(otherPlayer.balance).toBe(1000 + targetPlace.getFee());
     });
+
+    it('should end game when roll to other estate with out enough balance', () => {
+        player.balance = targetPlace.getFee() - 1;
+        player.execute(rollCommand);
+
+        expect(player.status).toBe(Status.END_GAME);
+        expect(player.action).toBe("破产啦");
+        expect(otherPlayer.balance).toBe(1000);
+    });
+
+
 });
