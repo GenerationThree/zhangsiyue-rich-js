@@ -21,8 +21,13 @@ export default class Player{
     }
 
     buyCurrent(){
-        this.balance -= this.currentPlace.price;
-        this.currentPlace.owner = this;
+        if (this.balance >= this.currentPlace.price) {
+            this.balance -= this.currentPlace.price;
+            this.currentPlace.owner = this;
+            this.action = '购买空地'
+        }
+        else
+            this.action = '财富不足，无法购买空地'
     }
 
 }

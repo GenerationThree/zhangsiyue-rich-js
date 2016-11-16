@@ -3,11 +3,23 @@ import Place from '../../src/place/Place';
 import Estate from '../../src/place/Estate';
 
 describe('player action test', () => {
+        let startPoint;
+    let targetPoint;
+    let player;
+    let empty;
+
+    beforeEach(() => {
+        startPoint = new Place();
+        targetPoint = new Place();
+        player = new Player();
+        empty = new Estate(200);
+
+        player.balance = 1000;
+    });
+
 
     it('should move to target place', ()=> {
-        let startPoint = new Place();
-        let targetPoint = new Place();
-        let player = new Player(startPoint);
+        player.currentPlace = startPoint;
 
         player.moveTo(targetPoint);
 
@@ -15,12 +27,23 @@ describe('player action test', () => {
     });
 
     it('should buy empty', () => {
-        let startPoint = new Estate(200);
-        let player = new Player(startPoint, 1000);
+        player.currentPlace = empty;
 
         player.buyCurrent();
 
         expect(player.balance).toBe(1000 - 200);
-        expect(startPoint.owner).toBe(player);
+        expect(empty.owner).toBe(player);
+        expect(player.action).toBe('购买空地');
     })
+
+    it('should not buy empty without enough money', () => {
+        empty.price = 1001;
+        player.currentPlace = empty;
+
+        player.buyCurrent();
+
+        expect(player.balance).toBe(1000);
+        expect(empty.owner).toBe(null);
+        expect(player.action).toBe('财富不足，无法购买空地');
+    });
 });
