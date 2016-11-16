@@ -4,7 +4,6 @@ import Estate from '../../src/place/Estate';
 import Map from '../../src/Map';
 import Dice from '../../src/Dice';
 import RollCommand from '../../src/command/RollCommand';
-import NoToBuildResponse from '../../src/command/NoToBuildResponse';
 import * as Status from '../../src/status';
 
 describe('roll to owned estate test', () => {

@@ -1,5 +1,7 @@
 import * as Status from './status';
 import {LEVEL_LIMIT} from './place/Estate';
+import Hospital from './place/Hospital';
+import Prison from './place/Prison';
 
 export default class Player{
     constructor(startPoint, balance){
@@ -7,6 +9,7 @@ export default class Player{
         this.currentPlace = startPoint;
         this.action = null;
         this.balance = balance;
+        this.freeTurns = -1;
     }
 
     execute(command){
@@ -41,6 +44,21 @@ export default class Player{
             this.action = '建设房产';
         }else
             this.action = '财富不足,无法建设房产';
+    }
+
+    payFee(){
+        if(this.freeTurns < 0
+            && !(this.currentPlace.owner.currentPlace instanceof Hospital)
+            && !(this.currentPlace.owner.currentPlace instanceof Prison)) {
+            let fee = this.currentPlace.getFee();
+            this.balance -= fee;
+            this.currentPlace.owner.gainFee(fee);
+            this.action = '交过路费' + fee + '元';
+        }
+    }
+
+    gainFee(fee){
+        this.balance += fee;
     }
 
 }

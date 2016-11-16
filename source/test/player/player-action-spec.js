@@ -1,19 +1,28 @@
 import Player from '../../src/Player';
 import Place from '../../src/place/Place';
+import Hospital from '../../src/place/Hospital';
+import Prison from '../../src/place/Prison';
 import Estate from '../../src/place/Estate';
 import {LEVEL_LIMIT} from '../../src/place/Estate';
 
 describe('player action test', () => {
-        let startPoint;
+    let startPoint;
     let targetPoint;
     let player;
     let empty;
+    let estate;
+    let hospital;
+    let prison;
 
     beforeEach(() => {
         startPoint = new Place();
         targetPoint = new Place();
         player = new Player();
+        hospital = new Hospital();
+        prison = new Prison();
         empty = new Estate(200);
+        estate = new Estate(200);
+        estate.level = 0;
 
         player.balance = 1000;
     });
@@ -49,8 +58,6 @@ describe('player action test', () => {
     });
 
     it('should build owned estate', () => {
-        let estate = new Estate(200);
-        estate.level = 0;
         player.currentPlace = estate;
 
         player.buildCurrent();
@@ -61,8 +68,7 @@ describe('player action test', () => {
     });
 
     it('should not build owned estate without enough balance', () => {
-        let estate = new Estate(1001);
-        estate.level = 0;
+        estate.price = 1001;
         player.currentPlace = estate;
 
         player.buildCurrent();
@@ -73,7 +79,6 @@ describe('player action test', () => {
     });
 
     it('should not build top level owned estate', () => {
-        let estate = new Estate(200);
         estate.level = LEVEL_LIMIT;
         player.currentPlace = estate;
 
@@ -82,5 +87,53 @@ describe('player action test', () => {
         expect(player.balance).toBe(1000);
         expect(estate.level).toBe(LEVEL_LIMIT);
         expect(player.action).toBe('房产已到最高级');
+    });
+
+    it('should pay fee to current estate owner', () => {
+        player.currentPlace = estate;
+        let otherPlayer = new Player();
+        otherPlayer.balance = 1000;
+        otherPlayer.currentPlace = estate;
+        estate.owner = otherPlayer;
+
+        player.payFee();
+
+        expect(player.balance).toBe(1000 - estate.getFee());
+        expect(player.action).toBe('交过路费' + estate.getFee() + '元');
+        expect(otherPlayer.balance).toBe(1000 + estate.getFee());
+    });
+
+    it('should not pay fee to current estate owner with free turns', () => {
+        player.freeTurns = 1;
+        player.currentPlace = estate;
+        let otherPlayer = new Player();
+        otherPlayer.balance = 1000;
+        estate.owner = otherPlayer;
+
+        player.payFee();
+
+        expect(player.balance).toBe(1000);
+        expect(otherPlayer.balance).toBe(1000);
+    });
+
+    it('should not pay fee to current estate owner when owner is in hospital or prison', () => {
+        player.freeTurns = 1;
+        player.currentPlace = estate;
+        let otherPlayer = new Player();
+        estate.owner = otherPlayer;
+        otherPlayer.balance = 1000;
+        otherPlayer.currentPlace = hospital;
+
+        player.payFee();
+
+        expect(player.balance).toBe(1000);
+        expect(otherPlayer.balance).toBe(1000);
+
+        otherPlayer.currentPlace = prison;
+
+        player.payFee();
+
+        expect(player.balance).toBe(1000);
+        expect(otherPlayer.balance).toBe(1000);
     });
 });
