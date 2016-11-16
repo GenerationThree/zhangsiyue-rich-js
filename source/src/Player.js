@@ -1,8 +1,9 @@
 import * as Status from './status';
 
 export default class Player{
-    constructor(){
+    constructor(startPoint){
         this.status = Status.WAIT_COMMAND;
+        this.currentPlace = startPoint;
     }
 
     execute(command){
@@ -12,4 +13,9 @@ export default class Player{
     respond(response){
         this.status = response.execute(this);
     }
+
+    moveTo(target){
+        this.currentPlace = target;
+    }
+
 }
