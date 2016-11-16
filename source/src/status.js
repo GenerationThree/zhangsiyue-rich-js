@@ -1,0 +1,1 @@
+export const WAIT_COMMAND = 'WAIT_COMMAND';
