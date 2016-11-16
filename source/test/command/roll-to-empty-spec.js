@@ -8,14 +8,25 @@ import * as Status from '../../src/status';
 
 describe('roll to empty test', () =>{
 
-    it('should player be wait response when roll to empty', ()=>{
-       let startPoint = new Place();
-       let targetPlace = new Place();
-        let player = new Player(startPoint);
-        let map = new Map(startPoint, targetPlace);
-        let dice = new Dice();
+    let startPoint;
+    let targetPlace ;
+    let player;
+    let map;
+    let dice;
+    let rollCommand;
+
+    beforeEach(() => {
+        startPoint = new Place();
+        targetPlace = new Place();
+        player = new Player(startPoint);
+        map = new Map(startPoint, targetPlace);
+        dice = new Dice();
+        rollCommand = new RollCommand(map, dice);
+
         dice.next = () => (1);
-        let rollCommand = new RollCommand(map, dice);
+    });
+
+    it('should player be wait response when roll to empty', ()=>{
 
         player.execute(rollCommand);
 

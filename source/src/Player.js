@@ -1,10 +1,11 @@
 import * as Status from './status';
 
 export default class Player{
-    constructor(startPoint){
+    constructor(startPoint, balance){
         this.status = Status.WAIT_COMMAND;
         this.currentPlace = startPoint;
         this.action = null;
+        this.balance = balance;
     }
 
     execute(command){
@@ -17,6 +18,11 @@ export default class Player{
 
     moveTo(target){
         this.currentPlace = target;
+    }
+
+    buyCurrent(){
+        this.balance -= this.currentPlace.price;
+        this.currentPlace.owner = this;
     }
 
 }
