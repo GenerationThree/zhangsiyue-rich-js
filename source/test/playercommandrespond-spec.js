@@ -19,4 +19,13 @@ describe('player command respond test', () => {
 
         expect(player.status).toBe(Status.WAIT_COMMAND);
     });
+
+    it('should be wait response after command need response', ()=>{
+        command.execute = () => Status.WAIT_RESPONSE;
+
+        player.execute(command);
+
+        expect(player.status).toBe(Status.WAIT_RESPONSE);
+    });
+
 });
