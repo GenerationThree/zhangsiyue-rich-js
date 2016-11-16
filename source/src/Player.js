@@ -4,6 +4,7 @@ export default class Player{
     constructor(startPoint){
         this.status = Status.WAIT_COMMAND;
         this.currentPlace = startPoint;
+        this.action = null;
     }
 
     execute(command){

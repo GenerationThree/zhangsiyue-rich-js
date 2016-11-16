@@ -20,6 +20,7 @@ describe('roll to empty test', () =>{
         player.execute(rollCommand);
 
         expect(player.status).toBe(Status.WAIT_RESPONSE);
+        expect(player.action).toBe("走到空地");
         expect(player.currentPlace).toBe(targetPlace);
     });
 });

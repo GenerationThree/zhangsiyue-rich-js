@@ -11,6 +11,7 @@ export default class RollCommand extends Command{
     execute(player){
         let target = this.map.move(player.currentPlace, this.dice.next());
         player.moveTo(target);
+        player.action = '走到空地';
         return Status.WAIT_RESPONSE;
     }
 }
