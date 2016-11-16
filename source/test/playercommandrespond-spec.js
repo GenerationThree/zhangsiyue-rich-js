@@ -28,4 +28,12 @@ describe('player command respond test', () => {
         expect(player.status).toBe(Status.WAIT_RESPONSE);
     });
 
+    it('should be end turn after command', ()=>{
+        command.execute = () => Status.END_TURN;
+
+        player.execute(command);
+
+        expect(player.status).toBe(Status.END_TURN);
+    });
+
 });
