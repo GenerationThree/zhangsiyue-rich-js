@@ -1,6 +1,7 @@
 import Map from '../../src/Map';
 import Dice from '../../src/Dice';
 import RollCommand from '../../src/command/RollCommand';
+import UseMagicResponse from '../../src/command/UseMagicResponse';
 import MagicHouse from "../../src/place/MagicHouse";
 import Place from "../../src/place/Place";
 import * as Status from '../../src/status';
@@ -13,6 +14,7 @@ describe('roll to magic house test', () => {
     let map;
     let dice;
     let rollCommand;
+    let useMagicResponse;
 
     beforeEach(() => {
         startPoint = new Place();
@@ -21,6 +23,7 @@ describe('roll to magic house test', () => {
         map = new Map(startPoint, magicHouse);
         dice = new Dice();
         rollCommand = new RollCommand(map, dice);
+        useMagicResponse = new UseMagicResponse();
 
         dice.next = () => (1);
     });
@@ -29,6 +32,13 @@ describe('roll to magic house test', () => {
        player.execute(rollCommand);
 
         expect(player.status).toBe(Status.WAIT_RESPONSE);
+    });
+
+    it('should end turn after use magic response', () => {
+        player.execute(rollCommand);
+        player.execute(useMagicResponse);
+
+        expect(player.status).toBe(Status.END_TURN);
     });
 
 });
