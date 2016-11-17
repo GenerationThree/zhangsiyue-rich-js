@@ -9,6 +9,7 @@ export default class Player{
         this.currentPlace = startPoint;
         this.action = null;
         this.balance = balance;
+        this.points = 0;
         this.freeTurns = -1;
         this.waitTurns = -1;
         this.estates = [];
