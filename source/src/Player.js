@@ -69,6 +69,8 @@ export default class Player {
     }
 
     buyTool(type) {
+        if(this.tools.length >= 10)
+            return;
         let price = TOOL_TYPE[type];
         if (price <= this.points) {
             this.points -= price;
