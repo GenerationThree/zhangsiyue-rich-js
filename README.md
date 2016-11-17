@@ -1,14 +1,31 @@
-#rich game
-
+#Rich game
 
 karma  jasmine  ES6
 
-```
-npm run tests
-```
+
+
+## Installation
+
+- `npm install`
+
+  ​
+
+## Run test
+
+- `nam run tests`
+
+
+
+## Run
+
+- `nam start`
+- open `index.html` in a browser
+-  `game.js` is the entry point.
+
 
 
 ##需求
+
 模拟项目开发
 开发要求
 开发语言为Java
