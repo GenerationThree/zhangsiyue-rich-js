@@ -23,7 +23,7 @@ export default class Player {
                 break;
             default:
         }
-        this.status = Status.WAIT_COMMAND;
+        this.status = Status.END_TURN;
         this.currentPlace = startPoint;
         this.action = null;
         this.balance = balance;
@@ -32,6 +32,14 @@ export default class Player {
         this.waitTurns = -1;
         this.estates = [];
         this.tools = [];
+    }
+
+    startTurn(){
+        if(this.waitTurns === -1) {
+            this.status = Status.WAIT_COMMAND;
+        }
+        else
+            this.waitTurns -- ;
     }
 
     execute(command) {

@@ -7,6 +7,7 @@ import Map from '../../src/GameMap';
 import {LEVEL_LIMIT} from '../../src/place/Estate';
 import Tool from "../../src/Tool";
 import {TOOL_TYPE} from "../../src/Tool";
+import * as Status from '../../src/player/playerStatus';
 
 describe('player action test', () => {
     let startPoint;
@@ -224,6 +225,24 @@ describe('player action test', () => {
         player.useTool(1, 1, map);
 
         expect(player.tools.length).toBe(1);
+    });
+
+    it('should be wait command when start turn', () => {
+       player.status = Status.END_TURN;
+        player.waitTurns = -1;
+
+        player.startTurn();
+        expect(player.status).toBe(Status.WAIT_COMMAND);
+        expect(player.waitTurns).toBe(-1);
+    });
+
+    it('should be end turn when player need wait', () => {
+        player.status = Status.END_TURN;
+        player.waitTurns = 0;
+
+        player.startTurn();
+        expect(player.status).toBe(Status.END_TURN);
+        expect(player.waitTurns).toBe(-1);
     });
 
 });

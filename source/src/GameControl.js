@@ -20,7 +20,7 @@ export default class GameControl {
         this.dice = new Dice();
         this.initBalance = 10000;
         this.status = GameStatus.WAIT_INIT_BALANCE;
-        this.currentPlayer = null;
+        this.currentPlayer = undefined;
         this.map = new GameMap();
         this.initGameMap();
     }
@@ -65,5 +65,15 @@ export default class GameControl {
         });
         this.players = this.players.sort((a,b) =>(a.id - b.id));
         this.status = GameStatus.IN_PROCESS;
+    }
+
+    startTurn(){
+
+        if(this.currentPlayer === undefined)
+            this.currentPlayer = this.players[0];
+        else
+            this.currentPlayer = this.players[(this.players.indexOf(this.currentPlayer)+1)%this.players.length];
+
+        this.currentPlayer.startTurn();
     }
 }

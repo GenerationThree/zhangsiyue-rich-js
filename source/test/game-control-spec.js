@@ -1,6 +1,8 @@
 import GameControl from "../src/GameControl";
 import * as GameStatus from '../src/gameStatus';
 import StartPoint from "../src/place/StartPoint";
+import Player from "../src/player/Player";
+import * as PlayerStatus from '../src/player/playerStatus';
 
 describe('game control test', () => {
     let game;
@@ -35,5 +37,29 @@ describe('game control test', () => {
         let startPoint = game.map.places.filter(p => p instanceof StartPoint)[0];
         expect(game.players[0].currentPlace).toBe(startPoint);
         expect(startPoint.locateHere.length).toBe(3);
+    });
+
+    it('should find first player and start his turn when init game', () => {
+        let firstPlayer = new Player(1, 10000);
+        let secondPlayer = new Player(2, 10000);
+        game.players = [firstPlayer, secondPlayer];
+        game.currentPlayer = undefined;
+        game.startTurn();
+
+        expect(game.currentPlayer).toBe(firstPlayer);
+        expect(firstPlayer.status).toBe(PlayerStatus.WAIT_COMMAND);
+    });
+
+    it('should skip the wait player', () => {
+        let firstPlayer = new Player(1, 10000);
+        let secondPlayer = new Player(2, 10000);
+        secondPlayer.waitTurns = 1;
+        game.players = [firstPlayer, secondPlayer];
+        game.currentPlayer = firstPlayer;
+
+        game.startTurn();
+
+        expect(game.currentPlayer).toBe(secondPlayer);
+        expect(firstPlayer.status).toBe(PlayerStatus.END_TURN);
     });
 });
