@@ -76,4 +76,20 @@ export default class Player{
         }
     }
 
+    selectGift(choice){
+        switch(choice){
+            case 1:
+                this.balance += 2000;
+                break;
+            case 2:
+                this.points += 200;
+                break;
+            case 3:
+                this.freeTurns = 5;
+                break;
+            default:
+                break;
+        }
+    }
+
 }
