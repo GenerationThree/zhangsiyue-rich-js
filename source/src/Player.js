@@ -5,8 +5,8 @@ import Prison from './place/Prison';
 import {TOOL_TYPE} from './Tool';
 import Tool from "./Tool";
 
-export default class Player{
-    constructor(startPoint, balance){
+export default class Player {
+    constructor(startPoint, balance) {
         this.status = Status.WAIT_COMMAND;
         this.currentPlace = startPoint;
         this.action = null;
@@ -18,20 +18,20 @@ export default class Player{
         this.tools = [];
     }
 
-    execute(command){
+    execute(command) {
         this.status = command.execute(this);
     }
 
-    respond(response){
+    respond(response) {
         this.status = response.execute(this);
     }
 
-    moveTo(target){
+    moveTo(target) {
         this.currentPlace.locateHere.pop(this);
         this.currentPlace = target;
     }
 
-    buyCurrent(){
+    buyCurrent() {
         if (this.balance >= this.currentPlace.price) {
             this.balance -= this.currentPlace.price;
             this.currentPlace.owner = this;
@@ -42,20 +42,19 @@ export default class Player{
             this.action = '财富不足,无法购买空地'
     }
 
-    buildCurrent(){
-        if(this.currentPlace.level == LEVEL_LIMIT){
+    buildCurrent() {
+        if (this.currentPlace.level == LEVEL_LIMIT) {
             this.action = '房产已到最高级';
-        }else
-        if(this.balance >= this.currentPlace.price) {
+        } else if (this.balance >= this.currentPlace.price) {
             this.balance -= this.currentPlace.price;
             this.currentPlace.level++;
             this.action = '建设房产';
-        }else
+        } else
             this.action = '财富不足,无法建设房产';
     }
 
-    payFee(){
-        if(this.freeTurns < 0
+    payFee() {
+        if (this.freeTurns < 0
             && !(this.currentPlace.owner.currentPlace instanceof Hospital)
             && !(this.currentPlace.owner.currentPlace instanceof Prison)) {
             let fee = this.currentPlace.getFee();
@@ -65,20 +64,20 @@ export default class Player{
         }
     }
 
-    gainFee(fee){
+    gainFee(fee) {
         this.balance += fee;
     }
 
-    buyTool(type){
+    buyTool(type) {
         let price = TOOL_TYPE[type];
-        if(price <= this.points) {
+        if (price <= this.points) {
             this.points -= price;
             this.tools.push(new Tool(type));
         }
     }
 
-    selectGift(choice){
-        switch(choice){
+    selectGift(choice) {
+        switch (choice) {
             case 1:
                 this.balance += 2000;
                 break;
@@ -93,9 +92,9 @@ export default class Player{
         }
     }
 
-    sellEstate(map, position){
+    sellEstate(map, position) {
         let estate = map.places[position % map.places.length];
-        if(estate.owner == this) {
+        if (estate.owner == this) {
             this.balance += 2 * (estate.level + 1) * estate.price;
             estate.owner = null;
             estate.level = 0;
@@ -103,12 +102,21 @@ export default class Player{
         }
     }
 
-    sellTool(type){
+    sellTool(type) {
         let targetTool = this.tools.filter(tool => tool.type === type)[0];
-        if(targetTool !== undefined) {
+        if (targetTool !== undefined) {
             this.tools.pop(targetTool);
             this.points += targetTool.price;
         }
+    }
+
+    useTool(type, distance, map) {
+        let targetTool = this.tools.filter(tool => tool.type === type)[0];
+        if (targetTool !== undefined) {
+            if (targetTool.use(map, this.currentPlace, distance))
+                this.tools.pop(targetTool);
+        }
+
     }
 
 }

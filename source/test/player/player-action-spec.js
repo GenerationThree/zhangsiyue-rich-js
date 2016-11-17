@@ -192,4 +192,38 @@ describe('player action test', () => {
         expect(player.tools.length).toBe(1);
     });
 
+    it('should remove tool when player use tool', () => {
+        let block = new Tool(1);
+        player.tools.push(block);
+        player.currentPlace = startPoint;
+        let map = new Map(startPoint, targetPoint);
+
+        player.useTool(1, 1, map);
+
+        expect(player.tools.length).toBe(0);
+    });
+
+    it('should not use tool when player do not have specified tool', () => {
+        let block = new Tool(1);
+        player.tools.push(block);
+        player.currentPlace = startPoint;
+        let map = new Map(startPoint, targetPoint);
+
+        player.useTool(2, 1, map);
+
+        expect(player.tools.length).toBe(1);
+    });
+
+    it('should not remove tool when use tool fail', () => {
+        let block = new Tool(1);
+        player.tools.push(block);
+        player.currentPlace = startPoint;
+        targetPoint.hasBomb = true;
+        let map = new Map(startPoint, targetPoint);
+
+        player.useTool(1, 1, map);
+
+        expect(player.tools.length).toBe(1);
+    });
+
 });
