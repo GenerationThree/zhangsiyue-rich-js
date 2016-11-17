@@ -2,6 +2,8 @@ import * as Status from './status';
 import {LEVEL_LIMIT} from './place/Estate';
 import Hospital from './place/Hospital';
 import Prison from './place/Prison';
+import {TOOL_TYPE} from './Tool';
+import Tool from "./Tool";
 
 export default class Player{
     constructor(startPoint, balance){
@@ -13,6 +15,7 @@ export default class Player{
         this.freeTurns = -1;
         this.waitTurns = -1;
         this.estates = [];
+        this.tools = [];
     }
 
     execute(command){
@@ -63,6 +66,14 @@ export default class Player{
 
     gainFee(fee){
         this.balance += fee;
+    }
+
+    buyTool(type){
+        let price = TOOL_TYPE[type];
+        if(price <= this.points) {
+            this.points -= price;
+            this.tools.push(new Tool(type));
+        }
     }
 
 }
