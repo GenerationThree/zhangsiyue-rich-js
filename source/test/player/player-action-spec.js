@@ -3,6 +3,7 @@ import Place from '../../src/place/Place';
 import Hospital from '../../src/place/Hospital';
 import Prison from '../../src/place/Prison';
 import Estate from '../../src/place/Estate';
+import Map from '../../src/Map';
 import {LEVEL_LIMIT} from '../../src/place/Estate';
 
 describe('player action test', () => {
@@ -26,7 +27,6 @@ describe('player action test', () => {
 
         player.balance = 1000;
     });
-
 
     it('should move to target place', ()=> {
         player.currentPlace = startPoint;
@@ -138,4 +138,32 @@ describe('player action test', () => {
         expect(player.balance).toBe(1000);
         expect(otherPlayer.balance).toBe(1000);
     });
+
+    it('should sell owned estate', () => {
+        estate.owner = player;
+        estate.level = 1;
+        player.estates.push(estate);
+        let map = new Map(estate);
+
+        player.sellEstate(map, 0);
+
+        expect(player.balance).toBe(1000 + 2 * 200 * 2);
+        expect(player.estates.length).toBe(0);
+        expect(estate.owner).toBe(null);
+        expect(estate.level).toBe(0);
+    })
+
+    it('should not sell not owned estate', () => {
+        let otherPlayer = new Player();
+        estate.owner = otherPlayer;
+        estate.level = 1;
+        let map = new Map(estate);
+
+        player.sellEstate(map, 0);
+
+        expect(player.balance).toBe(1000);
+        expect(estate.owner).toBe(otherPlayer);
+        expect(estate.level).toBe(1);
+    })
+
 });

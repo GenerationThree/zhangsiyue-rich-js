@@ -92,4 +92,14 @@ export default class Player{
         }
     }
 
+    sellEstate(map, position){
+        let estate = map.places[position % map.places.length];
+        if(estate.owner == this) {
+            this.balance += 2 * (estate.level + 1) * estate.price;
+            estate.owner = null;
+            estate.level = 0;
+            this.estates.pop(estate);
+        }
+    }
+
 }
