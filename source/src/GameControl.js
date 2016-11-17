@@ -58,7 +58,7 @@ export default class GameControl {
         this.status = GameStatus.WAIT_INIT_PLAYER;
     }
 
-    initPlayers(...ids){
+    initPlayers(ids){
         let startPoint = this.map.places.filter(p => p instanceof StartPoint)[0];
         ids.forEach(id => {
             var player = new Player(startPoint, this.initBalance, id);
@@ -85,5 +85,21 @@ export default class GameControl {
             this.winner = survivePlayers[0];
             this.status = GameStatus.END;
         }
+    }
+
+    execute(input, rl){
+        input = input.toLowerCase();
+        if(input === 'rich'){
+            rl.question('输入玩家初始金额（1000-50000):', (balance) => {
+                this.setInitBalance(balance);
+
+                rl.question('选择参与玩家(1,2,3,4):', (input) =>{
+                    let ids = input.split(',');
+                    this.initPlayers(ids);
+
+                });
+            });
+        }
+
     }
 }

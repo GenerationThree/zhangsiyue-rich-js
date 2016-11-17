@@ -30,7 +30,7 @@ describe('game control test', () => {
     });
 
     it('should be in process after init player', () => {
-        game.initPlayers(3,1,2);
+        game.initPlayers([3,1,2]);
 
         expect(game.players.length).toBe(3);
         expect(game.players[0].id).toBe(1);

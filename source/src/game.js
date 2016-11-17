@@ -1,16 +1,13 @@
 import readline from 'readline';
-
-console.log("welcome to rich");
-console.log("welcome to rich");
+import GameControl from "./GameControl";
 
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
 
-rl.question('What do you think of Node.js? ', (answer) => {
-    // TODO: Log the answer in a database
-    console.log('Thank you for your valuable feedback:', answer);
+let gameControl = new GameControl();
 
-    rl.close();
+rl.question('输入rich开始游戏 ', (input) => {
+    gameControl.execute(input, rl);
 });
