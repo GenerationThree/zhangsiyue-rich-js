@@ -10,6 +10,7 @@ import Prison from "./place/Prison";
 import MagicHouse from "./place/MagicHouse";
 import Mine from "./place/Mine";
 import Player from "./player/Player";
+import * as PlayerStatus from './player/playerStatus';
 
 export const INIT_BALANCE_LOW_LIMIT = 1000;
 export const INIT_BALANCE_HIGH_LIMIT = 50000;
@@ -21,6 +22,7 @@ export default class GameControl {
         this.initBalance = 10000;
         this.status = GameStatus.WAIT_INIT_BALANCE;
         this.currentPlayer = undefined;
+        this.winner = undefined;
         this.map = new GameMap();
         this.initGameMap();
     }
@@ -75,5 +77,13 @@ export default class GameControl {
             this.currentPlayer = this.players[(this.players.indexOf(this.currentPlayer)+1)%this.players.length];
 
         this.currentPlayer.startTurn();
+    }
+
+    endTurn(){
+        let survivePlayers = this.players.filter(p => p.status !== PlayerStatus.END_GAME);
+        if(survivePlayers.length === 1){
+            this.winner = survivePlayers[0];
+            this.status = GameStatus.END;
+        }
     }
 }

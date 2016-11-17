@@ -51,8 +51,8 @@ describe('game control test', () => {
     });
 
     it('should skip the wait player', () => {
-        let firstPlayer = new Player(1, 10000);
-        let secondPlayer = new Player(2, 10000);
+        let firstPlayer = new Player();
+        let secondPlayer = new Player();
         secondPlayer.waitTurns = 1;
         game.players = [firstPlayer, secondPlayer];
         game.currentPlayer = firstPlayer;
@@ -61,5 +61,19 @@ describe('game control test', () => {
 
         expect(game.currentPlayer).toBe(secondPlayer);
         expect(firstPlayer.status).toBe(PlayerStatus.END_TURN);
+    });
+
+    it('should end game when find winner', () => {
+        let firstPlayer = new Player();
+        let secondPlayer = new Player();
+        firstPlayer.status = PlayerStatus.END_GAME;
+        secondPlayer.status = PlayerStatus.END_TURN;
+        game.players = [firstPlayer, secondPlayer];
+        game.currentPlayer = firstPlayer;
+
+        game.endTurn();
+
+        expect(game.winner).toBe(secondPlayer);
+        expect(game.status).toBe(GameStatus.END);
     });
 });
