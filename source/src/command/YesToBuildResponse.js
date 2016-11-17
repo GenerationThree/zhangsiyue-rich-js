@@ -1,5 +1,5 @@
 import Command from './Command';
-import * as Status from '../status';
+import * as Status from '../player/playerStatus';
 
 export default class YesToPromoteResponse extends Command{
     execute(player){

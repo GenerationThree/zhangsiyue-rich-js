@@ -1,7 +1,7 @@
-import Player from '../../src/Player';
+import Player from '../../src/player/Player';
 import SellToolCommand from '../../src/command/SellToolCommand';
 import {TOOL_TYPE} from '../../src/Tool';
-import * as Status from '../../src/status';
+import * as Status from '../../src/player/playerStatus';
 import Tool from "../../src/Tool";
 
 describe('sell tool command test', () => {

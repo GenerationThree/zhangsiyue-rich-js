@@ -1,13 +1,13 @@
-import Player from '../../src/Player';
+import Player from '../../src/player/Player';
 import Place from '../../src/place/Place';
-import Map from '../../src/Map';
+import Map from '../../src/GameMap';
 import Dice from '../../src/Dice';
 import RollCommand from '../../src/command/RollCommand';
 import BuyToolResponse from '../../src/command/BuyToolResponse';
 import ToolHouse from '../../src/place/ToolHouse';
 import {POINTS_LIMIT} from '../../src/place/ToolHouse';
 import {TOOL_TYPE} from '../../src/Tool';
-import * as Status from '../../src/status';
+import * as Status from '../../src/player/playerStatus';
 
 describe('roll to tool house test', () => {
     let startPoint;

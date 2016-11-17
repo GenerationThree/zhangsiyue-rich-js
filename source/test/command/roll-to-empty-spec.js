@@ -1,12 +1,12 @@
-import Player from '../../src/Player';
+import Player from '../../src/player/Player';
 import Place from '../../src/place/Place';
 import Estate from '../../src/place/Estate';
-import Map from '../../src/Map';
+import Map from '../../src/GameMap';
 import Dice from '../../src/Dice';
 import RollCommand from '../../src/command/RollCommand';
 import YesToBuyResponse from '../../src/command/YesToBuyResponse';
 import NoToBuyResponse from '../../src/command/NoToBuyResponse';
-import * as Status from '../../src/status';
+import * as Status from '../../src/player/playerStatus';
 
 
 describe('roll to empty test', () => {

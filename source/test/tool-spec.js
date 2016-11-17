@@ -1,7 +1,7 @@
 import Place from '../src/place/Place';
-import Map from '../src/Map';
+import Map from '../src/GameMap';
 import Tool from '../src/Tool';
-import Player from "../src/Player";
+import Player from "../src/player/Player";
 
 
 describe('tool test', () => {

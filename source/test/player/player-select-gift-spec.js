@@ -1,4 +1,4 @@
-import Player from '../../src/Player';
+import Player from '../../src/player/Player';
 
 describe('player select tool test', () => {
     let player;

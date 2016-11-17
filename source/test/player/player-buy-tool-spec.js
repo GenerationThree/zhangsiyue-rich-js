@@ -1,4 +1,4 @@
-import Player from '../../src/Player';
+import Player from '../../src/player/Player';
 import {TOOL_TYPE} from '../../src/Tool';
 import Tool from "../../src/Tool";
 

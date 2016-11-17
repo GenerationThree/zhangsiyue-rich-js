@@ -1,8 +1,8 @@
-import Player from '../../src/Player';
-import Map from '../../src/Map';
+import Player from '../../src/player/Player';
+import Map from '../../src/GameMap';
 import Place from '../../src/place/Place';
 import UseToolCommand from '../../src/command/UseToolCommand';
-import * as Status from '../../src/status';
+import * as Status from '../../src/player/playerStatus';
 import Tool from "../../src/Tool";
 
 describe('use tool command test', () => {

@@ -1,11 +1,11 @@
-import Player from '../../src/Player';
+import Player from '../../src/player/Player';
 import Place from '../../src/place/Place';
-import Map from '../../src/Map';
+import Map from '../../src/GameMap';
 import Dice from '../../src/Dice';
 import RollCommand from '../../src/command/RollCommand';
 import SelectGiftResponse from '../../src/command/SelectGiftResponse';
 import GiftHouse from "../../src/place/GiftHouse";
-import * as Status from '../../src/status';
+import * as Status from '../../src/player/playerStatus';
 
 describe('roll to gift house test', () => {
     let startPoint;

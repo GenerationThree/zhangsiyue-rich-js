@@ -1,6 +1,6 @@
 import Command from "./Command";
 import {POINTS_LIMIT} from '../place/ToolHouse';
-import * as Status from '../status';
+import * as Status from '../player/playerStatus';
 
 export default class BuyToolResponse extends Command{
 

@@ -1,11 +1,11 @@
-import Map from '../../src/Map';
+import Map from '../../src/GameMap';
 import Dice from '../../src/Dice';
 import RollCommand from '../../src/command/RollCommand';
 import UseMagicResponse from '../../src/command/UseMagicResponse';
 import MagicHouse from "../../src/place/MagicHouse";
 import Place from "../../src/place/Place";
-import * as Status from '../../src/status';
-import Player from "../../src/Player";
+import * as Status from '../../src/player/playerStatus';
+import Player from "../../src/player/Player";
 
 describe('roll to magic house test', () => {
     let startPoint;

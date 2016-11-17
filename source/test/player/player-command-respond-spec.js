@@ -1,6 +1,6 @@
-import Player from '../../src/Player';
+import Player from '../../src/player/Player';
 import Command from '../../src/command/Command';
-import * as Status from '../../src/status';
+import * as Status from '../../src/player/playerStatus';
 
 describe('player command respond test', () => {
 

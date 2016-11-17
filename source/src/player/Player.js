@@ -1,9 +1,9 @@
-import * as Status from './status';
-import {LEVEL_LIMIT} from './place/Estate';
-import Hospital from './place/Hospital';
-import Prison from './place/Prison';
-import {TOOL_TYPE} from './Tool';
-import Tool from "./Tool";
+import * as Status from './playerStatus';
+import {LEVEL_LIMIT} from '../place/Estate';
+import Hospital from '../place/Hospital';
+import Prison from '../place/Prison';
+import {TOOL_TYPE} from '../Tool';
+import Tool from "../Tool";
 
 export default class Player {
     constructor(startPoint, balance) {

@@ -1,8 +1,8 @@
-import Player from '../../src/Player';
+import Player from '../../src/player/Player';
 import Estate from '../../src/place/Estate';
-import Map from '../../src/Map';
+import Map from '../../src/GameMap';
 import SellCommand from '../../src/command/SellCommand';
-import * as Status from '../../src/status';
+import * as Status from '../../src/player/playerStatus';
 
 describe('sell command test', () => {
     it('should be wait command after sell command', () => {

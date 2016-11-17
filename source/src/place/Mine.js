@@ -1,5 +1,5 @@
 import Place from "./Place";
-import * as Status from '../status';
+import * as Status from '../player/playerStatus';
 
 export default class Mine extends Place{
     constructor(points){

@@ -1,4 +1,4 @@
-import Map from '../src/Map';
+import Map from '../src/GameMap';
 import Place from "../src/place/Place";
 
 describe('map test', () => {
