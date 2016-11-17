@@ -6,7 +6,23 @@ import {TOOL_TYPE} from '../Tool';
 import Tool from "../Tool";
 
 export default class Player {
-    constructor(startPoint, balance) {
+    constructor(startPoint, balance, id) {
+        this.id = id;
+        switch (id){
+            case 1:
+                this.name = 'Q';
+                break;
+            case 1:
+                this.name = 'A';
+                break;
+            case 1:
+                this.name = 'S';
+                break;
+            case 1:
+                this.name = 'J';
+                break;
+            default:
+        }
         this.status = Status.WAIT_COMMAND;
         this.currentPlace = startPoint;
         this.action = null;

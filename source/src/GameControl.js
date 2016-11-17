@@ -9,6 +9,7 @@ import GiftHouse from "./place/GiftHouse";
 import Prison from "./place/Prison";
 import MagicHouse from "./place/MagicHouse";
 import Mine from "./place/Mine";
+import Player from "./player/Player";
 
 export const INIT_BALANCE_LOW_LIMIT = 1000;
 export const INIT_BALANCE_HIGH_LIMIT = 50000;
@@ -53,5 +54,16 @@ export default class GameControl {
         if(balance >= INIT_BALANCE_LOW_LIMIT && balance <= INIT_BALANCE_HIGH_LIMIT)
             this.initBalance = balance;
         this.status = GameStatus.WAIT_INIT_PLAYER;
+    }
+
+    initPlayers(...ids){
+        let startPoint = this.map.places.filter(p => p instanceof StartPoint)[0];
+        ids.forEach(id => {
+            var player = new Player(startPoint, this.initBalance, id);
+            this.players.push(player);
+            startPoint.locateHere.push(player);
+        });
+        this.players = this.players.sort((a,b) =>(a.id - b.id));
+        this.status = GameStatus.IN_PROCESS;
     }
 }
