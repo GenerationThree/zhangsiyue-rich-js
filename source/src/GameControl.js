@@ -12,6 +12,10 @@ import Mine from "./place/Mine";
 import Player from "./player/Player";
 import * as PlayerStatus from './player/playerStatus';
 import RollCommand from "./command/RollCommand";
+import YesToBuyResponse from "./command/YesToBuyResponse";
+import YesToBuildResponse from "./command/YesToBuildResponse";
+import NoToBuyResponse from "./command/NoToBuyResponse";
+import NoToBuildResponse from "./command/NoToBuildResponse";
 
 export const INIT_BALANCE_LOW_LIMIT = 1000;
 export const INIT_BALANCE_HIGH_LIMIT = 50000;
@@ -103,7 +107,7 @@ export default class GameControl {
                     this.initPlayers(ids);
                     this.startTurn();
                     rl.question(this.currentPlayer.name + '->', (input) => {
-                        this.execute(input);
+                        this.execute(input, rl);
                     });
                 });
             });
@@ -111,7 +115,55 @@ export default class GameControl {
 
         if(input === 'roll'){
             this.currentPlayer.execute(new RollCommand(this.map, this.dice));
-            console.log('走到' + this.map.places.indexOf(this.currentPlayer.currentPlace));
+            if(this.currentPlayer.currentPlace instanceof Estate) {
+                if(this.currentPlayer.status === PlayerStatus.END_TURN)
+                    console.log('走到' + this.map.places.indexOf(this.currentPlayer.currentPlace) + '交过路费');
+                else
+                if(this.currentPlayer.currentPlace.owner === null){
+                    rl.question('走到' + this.map.places.indexOf(this.currentPlayer.currentPlace) + '是否购买空地？(y/n) ', (input)=>{
+                        this.execute(input, rl);
+                    });
+                }
+                else {
+                    rl.question('走到' + this.map.places.indexOf(this.currentPlayer.currentPlace) + '是否升级地产？(y/n) ', (input)=>{
+                        this.execute(input, rl);
+                    });
+                }
+            }
+        }
+
+        if(input === 'y'){
+            if(this.currentPlayer.currentPlace instanceof Estate) {
+                if(this.currentPlayer.currentPlace.owner === null){
+                    this.currentPlayer.execute(new YesToBuyResponse());
+                    // console.log('购买空地');
+                }
+                else {
+                    this.currentPlayer.execute(new YesToBuildResponse());
+                    // console.log('升级地产');
+                }
+                this.startTurn();
+                rl.question(this.currentPlayer.name + '->', (input) => {
+                    this.execute(input, rl);
+                });
+            }
+        }
+
+        if(input === 'n'){
+            if(this.currentPlayer.currentPlace instanceof Estate) {
+                if(this.currentPlayer.currentPlace.owner === null){
+                    this.currentPlayer.execute(new NoToBuyResponse());
+                    // console.log('购买空地');
+                }
+                else {
+                    this.currentPlayer.execute(new NoToBuildResponse());
+                    // console.log('升级地产');
+                }
+                this.startTurn();
+                rl.question(this.currentPlayer.name + '->', (input) => {
+                    this.execute(input, rl);
+                });
+            }
         }
 
     }
