@@ -3,7 +3,6 @@ import Place from '../../src/place/Place';
 import Map from '../../src/Map';
 import Dice from '../../src/Dice';
 import RollCommand from '../../src/command/RollCommand';
-import * as Status from '../../src/status';
 import Hospital from "../../src/place/Hospital";
 
 
