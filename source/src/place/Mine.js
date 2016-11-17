@@ -8,6 +8,7 @@ export default class Mine extends Place{
     }
 
     arrive(player){
+        this.locateHere.push(player);
         player.points += this.points;
         return Status.END_TURN;
     }

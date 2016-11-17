@@ -30,5 +30,6 @@ describe('roll to mine test', () => {
 
         expect(player.status).toBe(Status.END_TURN);
         expect(player.points).toBe(20);
+        expect(mine.locateHere.indexOf(player) !== -1).toBe(true);
     });
 });

@@ -9,6 +9,7 @@ export default class ToolHouse extends Place{
     }
 
     arrive(player){
+        this.locateHere.push(player);
         if(player.points >= POINTS_LIMIT)
             return Status.WAIT_RESPONSE;
         else

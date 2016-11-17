@@ -35,6 +35,7 @@ describe('roll to tool house test', () => {
         player.execute(rollCommand);
 
         expect(player.status).toBe(Status.WAIT_RESPONSE);
+        expect(toolHouse.locateHere.indexOf(player) !== -1).toBe(true);
     });
 
     it('should end turn when roll to tool house without enough points', () => {

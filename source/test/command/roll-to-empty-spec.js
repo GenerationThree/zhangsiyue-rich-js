@@ -36,6 +36,7 @@ describe('roll to empty test', () => {
         expect(player.status).toBe(Status.WAIT_RESPONSE);
         expect(player.action).toBe("走到空地");
         expect(player.currentPlace).toBe(targetPlace);
+        expect(targetPlace.locateHere.indexOf(player) !== -1).toBe(true);
     });
 
     it('should be end turn when respond yes to buy empty', ()=> {

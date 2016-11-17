@@ -42,6 +42,7 @@ describe('roll to other estate test', () => {
         expect(player.status).toBe(Status.END_TURN);
         expect(player.balance).toBe(1000 - targetPlace.getFee());
         expect(otherPlayer.balance).toBe(1000 + targetPlace.getFee());
+        expect(targetPlace.locateHere.indexOf(player) !== -1).toBe(true);
     });
 
     it('should end game when roll to other estate with out enough balance', () => {

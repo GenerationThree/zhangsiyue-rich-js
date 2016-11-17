@@ -4,7 +4,7 @@ import Map from '../../src/Map';
 import Dice from '../../src/Dice';
 import RollCommand from '../../src/command/RollCommand';
 import Hospital from "../../src/place/Hospital";
-
+import * as Status from '../../src/status';
 
 describe('roll pass by tool test', () =>{
     let startPoint;
@@ -44,6 +44,8 @@ describe('roll pass by tool test', () =>{
         player.execute(rollCommand);
 
         expect(player.currentPlace).toBe(hospital);
+        expect(hospital.locateHere.indexOf(player) !== -1).toBe(true);
+        expect(player.status).toBe(Status.END_TURN);
         expect(player.waitTurns).toBe(3);
         expect(toolPoint.hasBomb).toBe(false);
     });

@@ -30,5 +30,6 @@ describe('roll to prison test', () => {
 
         expect(player.status).toBe(Status.END_TURN);
         expect(player.waitTurns).toBe(3);
+        expect(prison.locateHere.indexOf(player) !== -1).toBe(true);
     });
 });

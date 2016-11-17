@@ -12,6 +12,7 @@ export default class Estate extends Place{
     }
 
     arrive(player){
+        this.locateHere.push(player);
         switch (this.owner){
             case null:
                 player.action = '走到空地';

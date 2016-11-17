@@ -32,6 +32,7 @@ describe('roll to gift house test', () => {
         player.execute(rollCommand);
 
         expect(player.status).toBe(Status.WAIT_RESPONSE);
+        expect(giftHouse.locateHere.indexOf(player) !== -1).toBe(true);
     });
 
     it('should end turn after select gift response at gift house', () =>{

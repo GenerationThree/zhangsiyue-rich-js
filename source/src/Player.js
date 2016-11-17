@@ -27,6 +27,7 @@ export default class Player{
     }
 
     moveTo(target){
+        this.currentPlace.locateHere.pop(this);
         this.currentPlace = target;
     }
 

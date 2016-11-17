@@ -38,6 +38,7 @@ describe('roll to owned estate test', () => {
         expect(player.status).toBe(Status.WAIT_RESPONSE);
         expect(player.action).toBe("走到所属地产");
         expect(player.currentPlace).toBe(targetPlace);
+        expect(targetPlace.locateHere.indexOf(player) !== -1).toBe(true);
     });
 
     it('should end turn when respond yes to build', () => {

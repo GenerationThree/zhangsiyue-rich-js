@@ -32,10 +32,12 @@ describe('player action test', () => {
 
     it('should move to target place', ()=> {
         player.currentPlace = startPoint;
+        startPoint.locateHere.push(player);
 
         player.moveTo(targetPoint);
 
         expect(player.currentPlace).toBe(targetPoint);
+        expect(startPoint.locateHere.indexOf(player) !== -1 ).toBe(false);
     });
 
     it('should buy empty', () => {
