@@ -10,6 +10,7 @@ export default class Player{
         this.action = null;
         this.balance = balance;
         this.freeTurns = -1;
+        this.waitTurns = -1;
         this.estates = [];
     }
 
