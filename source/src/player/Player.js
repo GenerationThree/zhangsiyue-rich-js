@@ -8,17 +8,18 @@ import Tool from "../Tool";
 export default class Player {
     constructor(startPoint, balance, id) {
         this.id = id;
+        this.name = undefined;
         switch (id){
             case 1:
                 this.name = 'Q';
                 break;
-            case 1:
+            case 2:
                 this.name = 'A';
                 break;
-            case 1:
+            case 3:
                 this.name = 'S';
                 break;
-            case 1:
+            case 4:
                 this.name = 'J';
                 break;
             default:

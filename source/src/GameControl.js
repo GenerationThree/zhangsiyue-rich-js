@@ -11,6 +11,7 @@ import MagicHouse from "./place/MagicHouse";
 import Mine from "./place/Mine";
 import Player from "./player/Player";
 import * as PlayerStatus from './player/playerStatus';
+import RollCommand from "./command/RollCommand";
 
 export const INIT_BALANCE_LOW_LIMIT = 1000;
 export const INIT_BALANCE_HIGH_LIMIT = 50000;
@@ -94,11 +95,23 @@ export default class GameControl {
                 this.setInitBalance(balance);
 
                 rl.question('选择参与玩家(1,2,3,4):', (input) =>{
-                    let ids = input.split(',');
+                    let idsInput = input.split(',');
+                    let ids = [];
+                    idsInput.forEach(id => {
+                        ids.push(parseInt(id));
+                    })
                     this.initPlayers(ids);
-
+                    this.startTurn();
+                    rl.question(this.currentPlayer.name + '->', (input) => {
+                        this.execute(input);
+                    });
                 });
             });
+        }
+
+        if(input === 'roll'){
+            this.currentPlayer.execute(new RollCommand(this.map, this.dice));
+            console.log('走到' + this.map.places.indexOf(this.currentPlayer.currentPlace));
         }
 
     }
