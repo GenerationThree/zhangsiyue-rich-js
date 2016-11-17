@@ -116,8 +116,10 @@ export default class GameControl {
         if(input === 'roll'){
             this.currentPlayer.execute(new RollCommand(this.map, this.dice));
             if(this.currentPlayer.currentPlace instanceof Estate) {
-                if(this.currentPlayer.status === PlayerStatus.END_TURN)
+                if(this.currentPlayer.status === PlayerStatus.END_TURN) {
                     console.log('走到' + this.map.places.indexOf(this.currentPlayer.currentPlace) + '交过路费');
+                    this.endTurn();
+                }
                 else
                 if(this.currentPlayer.currentPlace.owner === null){
                     rl.question('走到' + this.map.places.indexOf(this.currentPlayer.currentPlace) + '是否购买空地？(y/n) ', (input)=>{
@@ -130,6 +132,16 @@ export default class GameControl {
                     });
                 }
             }
+
+            if(this.currentPlayer.currentPlace instanceof Mine){
+                console.log('走到矿地，获取点数' + this.currentPlayer.currentPlace.points);
+                this.endTurn();
+                this.startTurn();
+                rl.question(this.currentPlayer.name + '->', (input) => {
+                    this.execute(input, rl);
+                });
+            }
+
         }
 
         if(input === 'y'){
@@ -142,6 +154,7 @@ export default class GameControl {
                     this.currentPlayer.execute(new YesToBuildResponse());
                     // console.log('升级地产');
                 }
+                this.endTurn();
                 this.startTurn();
                 rl.question(this.currentPlayer.name + '->', (input) => {
                     this.execute(input, rl);
@@ -159,6 +172,7 @@ export default class GameControl {
                     this.currentPlayer.execute(new NoToBuildResponse());
                     // console.log('升级地产');
                 }
+                this.endTurn();
                 this.startTurn();
                 rl.question(this.currentPlayer.name + '->', (input) => {
                     this.execute(input, rl);
