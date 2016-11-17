@@ -22,6 +22,10 @@ export default class Estate extends Place{
             default:
                 if (player.balance < this.getFee()) {
                     player.action = '破产啦';
+                    player.estates.forEach(estate => {
+                        estate.owner = null;
+                        estate.level = 0;
+                    });
                     return Status.END_GAME;
                 } else {
                     player.payFee();

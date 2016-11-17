@@ -45,13 +45,18 @@ describe('roll to owned estate test', () => {
     });
 
     it('should end game when roll to other estate with out enough balance', () => {
+        let estate = new Estate(200);
+        estate.owner = player;
+        player.estates.push(estate);
         player.balance = targetPlace.getFee() - 1;
         player.execute(rollCommand);
 
         expect(player.status).toBe(Status.END_GAME);
         expect(player.action).toBe("破产啦");
+        player.estates.forEach(estate => {
+            expect(estate.owner).toBe(null);
+            expect(estate.level).toBe(0);
+        });
         expect(otherPlayer.balance).toBe(1000);
     });
-
-
 });
