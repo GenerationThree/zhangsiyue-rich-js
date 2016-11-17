@@ -18,10 +18,8 @@ karma  jasmine  ES6
 
 ## Run
 
-- `nam start`
-- open `index.html` in a browser
--  `game.js` is the entry point.
-
+- npm install -g babel-cli
+-  babel-node source/src/game.js
 
 
 ##需求
