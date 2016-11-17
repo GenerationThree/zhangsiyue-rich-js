@@ -44,6 +44,7 @@ describe('player action test', () => {
         expect(player.balance).toBe(1000 - 200);
         expect(empty.owner).toBe(player);
         expect(player.action).toBe('购买空地');
+        expect(player.estates.length).toBe(1);
     })
 
     it('should not buy empty without enough money', () => {
@@ -55,6 +56,7 @@ describe('player action test', () => {
         expect(player.balance).toBe(1000);
         expect(empty.owner).toBe(null);
         expect(player.action).toBe('财富不足,无法购买空地');
+        expect(player.estates.length).toBe(0);
     });
 
     it('should build owned estate', () => {
