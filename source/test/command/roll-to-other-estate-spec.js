@@ -6,7 +6,7 @@ import Dice from '../../src/Dice';
 import RollCommand from '../../src/command/RollCommand';
 import * as Status from '../../src/status';
 
-describe('roll to owned estate test', () => {
+describe('roll to other estate test', () => {
     let startPoint;
     let targetPlace;
     let player;

@@ -7,7 +7,7 @@ import SelectGiftResponse from '../../src/command/SelectGiftResponse';
 import GiftHouse from "../../src/place/GiftHouse";
 import * as Status from '../../src/status';
 
-describe('roll to prison test', () => {
+describe('roll to gift house test', () => {
     let startPoint;
     let giftHouse;
     let player;
