@@ -102,4 +102,12 @@ export default class Player{
         }
     }
 
+    sellTool(type){
+        let targetTool = this.tools.filter(tool => tool.type === type)[0];
+        if(targetTool !== undefined) {
+            this.tools.pop(targetTool);
+            this.points += targetTool.price;
+        }
+    }
+
 }

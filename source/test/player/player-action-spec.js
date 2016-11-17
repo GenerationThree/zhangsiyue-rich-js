@@ -5,6 +5,8 @@ import Prison from '../../src/place/Prison';
 import Estate from '../../src/place/Estate';
 import Map from '../../src/Map';
 import {LEVEL_LIMIT} from '../../src/place/Estate';
+import Tool from "../../src/Tool";
+import {TOOL_TYPE} from "../../src/Tool";
 
 describe('player action test', () => {
     let startPoint;
@@ -165,5 +167,27 @@ describe('player action test', () => {
         expect(estate.owner).toBe(otherPlayer);
         expect(estate.level).toBe(1);
     })
+
+    it('should sell tool', () => {
+        let tool = new Tool(1);
+        player.tools = [tool];
+        player.points = 0;
+
+        player.sellTool(1);
+
+        expect(player.points).toBe(TOOL_TYPE[1]);
+        expect(player.tools.filter(tool => tool.type === 1).length).toBe(0);
+    })
+
+    it('should not sell tool not have', () => {
+        let tool = new Tool(2);
+        player.tools = [tool];
+        player.points = 0;
+
+        player.sellTool(1);
+
+        expect(player.points).toBe(0);
+        expect(player.tools.length).toBe(1);
+    });
 
 });
