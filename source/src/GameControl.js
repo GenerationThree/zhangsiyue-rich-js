@@ -57,128 +57,147 @@ export default class GameControl {
         this.map.places.push(new Mine(60));
     }
 
-    setInitBalance(balance){
-        if(balance >= INIT_BALANCE_LOW_LIMIT && balance <= INIT_BALANCE_HIGH_LIMIT)
+    setInitBalance(balance) {
+        if (balance >= INIT_BALANCE_LOW_LIMIT && balance <= INIT_BALANCE_HIGH_LIMIT)
             this.initBalance = balance;
         this.status = GameStatus.WAIT_INIT_PLAYER;
     }
 
-    initPlayers(ids){
+    initPlayers(ids) {
         let startPoint = this.map.places.filter(p => p instanceof StartPoint)[0];
         ids.forEach(id => {
             var player = new Player(startPoint, this.initBalance, id);
             this.players.push(player);
             startPoint.locateHere.push(player);
         });
-        this.players = this.players.sort((a,b) =>(a.id - b.id));
+        this.players = this.players.sort((a, b) =>(a.id - b.id));
         this.status = GameStatus.IN_PROCESS;
     }
 
-    startTurn(){
+    startTurn() {
 
-        if(this.currentPlayer === undefined)
+        if (this.currentPlayer === undefined)
             this.currentPlayer = this.players[0];
         else
-            this.currentPlayer = this.players[(this.players.indexOf(this.currentPlayer)+1)%this.players.length];
+            this.currentPlayer = this.players[(this.players.indexOf(this.currentPlayer) + 1) % this.players.length];
 
         this.currentPlayer.startTurn();
     }
 
-    endTurn(){
+    endTurn() {
         let survivePlayers = this.players.filter(p => p.status !== PlayerStatus.END_GAME);
-        if(survivePlayers.length === 1){
+        if (survivePlayers.length === 1) {
             this.winner = survivePlayers[0];
             this.status = GameStatus.END;
         }
     }
 
-    execute(input, rl){
+    execute(input, rl) {
         input = input.toLowerCase();
-        if(input === 'rich'){
+        if (this.status === GameStatus.WAIT_INIT_BALANCE) {
             rl.question('输入玩家初始金额（1000-50000):', (balance) => {
                 this.setInitBalance(balance);
-
-                rl.question('选择参与玩家(1,2,3,4):', (input) =>{
-                    let idsInput = input.split(',');
-                    let ids = [];
-                    idsInput.forEach(id => {
-                        ids.push(parseInt(id));
-                    })
-                    this.initPlayers(ids);
-                    this.startTurn();
-                    rl.question(this.currentPlayer.name + '->', (input) => {
-                        this.execute(input, rl);
-                    });
+                rl.question('选择参与玩家(1,2,3,4):', (input) => {
+                    this.execute(input, rl);
                 });
             });
         }
 
-        if(input === 'roll'){
-            this.currentPlayer.execute(new RollCommand(this.map, this.dice));
-            if(this.currentPlayer.currentPlace instanceof Estate) {
-                if(this.currentPlayer.status === PlayerStatus.END_TURN) {
-                    console.log('走到' + this.map.places.indexOf(this.currentPlayer.currentPlace) + '交过路费');
-                    this.endTurn();
-                }
-                else
-                if(this.currentPlayer.currentPlace.owner === null){
-                    rl.question('走到' + this.map.places.indexOf(this.currentPlayer.currentPlace) + '是否购买空地？(y/n) ', (input)=>{
-                        this.execute(input, rl);
-                    });
-                }
-                else {
-                    rl.question('走到' + this.map.places.indexOf(this.currentPlayer.currentPlace) + '是否升级地产？(y/n) ', (input)=>{
-                        this.execute(input, rl);
-                    });
-                }
-            }
+        if (this.status === GameStatus.WAIT_INIT_PLAYER) {
+            let idsInput = input.split(',');
+            let ids = [];
+            idsInput.forEach(id => {
+                ids.push(parseInt(id));
+            })
+            this.initPlayers(ids);
+            this.startTurn();
+            rl.question(this.currentPlayer.name + '->', (input) => {
+                this.execute(input, rl);
+            });
+        }
 
-            if(this.currentPlayer.currentPlace instanceof Mine){
-                console.log('走到矿地，获取点数' + this.currentPlayer.currentPlace.points);
-                this.endTurn();
-                this.startTurn();
-                rl.question(this.currentPlayer.name + '->', (input) => {
-                    this.execute(input, rl);
-                });
+        if (this.status === GameStatus.IN_PROCESS) {
+
+            switch (this.currentPlayer.status) {
+                case PlayerStatus.WAIT_COMMAND:
+                    if (input === 'roll') {
+                        this.currentPlayer.execute(new RollCommand(this.map, this.dice));
+
+                            if (this.currentPlayer.currentPlace instanceof Estate) {
+                                if (this.currentPlayer.status === PlayerStatus.END_TURN) {
+                                    console.log('走到' + this.map.places.indexOf(this.currentPlayer.currentPlace) + '交过路费');
+                                    this.endTurn();
+                                    this.startTurn();
+                                    rl.question(this.currentPlayer.name + '->', (input) => {
+                                        this.execute(input, rl);
+                                    });
+                                }
+                                else if (this.currentPlayer.currentPlace.owner === null) {
+                                    rl.question('走到' + this.map.places.indexOf(this.currentPlayer.currentPlace) + '是否购买空地？(y/n) ', (input)=> {
+                                        this.execute(input, rl);
+                                    });
+                                }
+                                else {
+                                    rl.question('走到' + this.map.places.indexOf(this.currentPlayer.currentPlace) + '是否升级地产？(y/n) ', (input)=> {
+                                        this.execute(input, rl);
+                                    });
+                                }
+                            }
+
+                            if (this.currentPlayer.currentPlace instanceof Mine) {
+                                console.log('走到矿地，获取点数' + this.currentPlayer.currentPlace.points);
+                                this.endTurn();
+                                this.startTurn();
+                                rl.question(this.currentPlayer.name + '->', (input) => {
+                                    this.execute(input, rl);
+                                });
+                            }
+
+                    }
+                    break;
+
+                case PlayerStatus.WAIT_RESPONSE:
+                    if (input === 'y') {
+
+                        if (this.currentPlayer.currentPlace instanceof Estate) {
+                            if (this.currentPlayer.currentPlace.owner === null) {
+                                this.currentPlayer.execute(new YesToBuyResponse());
+                                console.log('购买空地');
+                            }
+                            else {
+                                this.currentPlayer.execute(new YesToBuildResponse());
+                                console.log('升级地产');
+                            }
+                            this.endTurn();
+                            this.startTurn();
+                            rl.question(this.currentPlayer.name + '->', (input) => {
+                                this.execute(input, rl);
+                            });
+                        }
+                    }
+
+                    if (input === 'n') {
+                        if (this.currentPlayer.currentPlace instanceof Estate) {
+                            if (this.currentPlayer.currentPlace.owner === null) {
+                                this.currentPlayer.execute(new NoToBuyResponse());
+                            }
+                            else {
+                                this.currentPlayer.execute(new NoToBuildResponse());
+                            }
+                            this.endTurn();
+                            this.startTurn();
+                            rl.question(this.currentPlayer.name + '->', (input) => {
+                                this.execute(input, rl);
+                            });
+                        }
+
+                    }
+
+                    break;
+
+                default:
             }
 
         }
-
-        if(input === 'y'){
-            if(this.currentPlayer.currentPlace instanceof Estate) {
-                if(this.currentPlayer.currentPlace.owner === null){
-                    this.currentPlayer.execute(new YesToBuyResponse());
-                    // console.log('购买空地');
-                }
-                else {
-                    this.currentPlayer.execute(new YesToBuildResponse());
-                    // console.log('升级地产');
-                }
-                this.endTurn();
-                this.startTurn();
-                rl.question(this.currentPlayer.name + '->', (input) => {
-                    this.execute(input, rl);
-                });
-            }
-        }
-
-        if(input === 'n'){
-            if(this.currentPlayer.currentPlace instanceof Estate) {
-                if(this.currentPlayer.currentPlace.owner === null){
-                    this.currentPlayer.execute(new NoToBuyResponse());
-                    // console.log('购买空地');
-                }
-                else {
-                    this.currentPlayer.execute(new NoToBuildResponse());
-                    // console.log('升级地产');
-                }
-                this.endTurn();
-                this.startTurn();
-                rl.question(this.currentPlayer.name + '->', (input) => {
-                    this.execute(input, rl);
-                });
-            }
-        }
-
     }
 }
