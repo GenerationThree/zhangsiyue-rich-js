@@ -10,10 +10,13 @@ export default class BuyToolResponse extends Command{
     }
 
     execute(player){
-        player.buyTool(this.type);
 
         if(this.type === 'F' || this.type === 'f')
             return Status.END_TURN;
+
+        this.type = parseInt(this.type);
+
+        player.buyTool(this.type);
 
         if(player.points < POINTS_LIMIT)
             return Status.END_TURN;
